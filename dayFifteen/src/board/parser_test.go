@@ -2,6 +2,8 @@ package board
 
 import (
 	"reflect"
+	"fmt"
+	"sort"
 	"testing"
 )
 
@@ -11,7 +13,7 @@ func TestParserDataIsCorrect(t *testing.T) {
 		t.Errorf("Board is empty")
 	}
 	if len(board.elves) != 4 {
-		t.Error("Expected 4 elves")
+		t.Errorf("Expected 4 elves, got %d", len(board.elves))
 	}
 	elfExpectedXLoc := []int{4, 1, 5, 4}
 	elfExpectedYLoc := []int{1, 2, 2, 3}
@@ -19,7 +21,7 @@ func TestParserDataIsCorrect(t *testing.T) {
 	checkLocations(t, elfExpectedXLoc, elfExpectedYLoc, board.elves)
 
 	if len(board.goblins) != 3 {
-		t.Error("Expected 3 goblins")
+		t.Errorf("Expected 3 goblins, got %d", len(board.goblins))
 	}
 	goblinExpectedXLoc := []int{2, 3, 2}
 	goblinExpectedYLoc := []int{1, 2, 3}
@@ -55,6 +57,35 @@ func TestParserDataIsCorrect(t *testing.T) {
 			t.Errorf("The space %+v should have been open", val)
 		}
 	}
+}
+
+func TestPlayerSort(t* testing.T){
+	players := Players{
+		Player{
+			xLocation: 2,
+			yLocation: 2,
+		},
+		Player{
+			xLocation: 1,
+			yLocation: 0,
+		},
+		Player{
+			xLocation: 1,
+			yLocation: 1,
+		},
+		Player{
+			xLocation: 1,
+			yLocation: 0,
+		},
+		Player{
+			xLocation: 3,
+			yLocation: 3,
+		},
+	}
+	sort.Stable(players)
+	fmt.Println(players)
+
+	if reflect.deep
 }
 
 func checkLocations(t *testing.T, expectedXLocations, expectedYLocations []int, players []Player) {

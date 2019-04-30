@@ -31,22 +31,25 @@ func Parse(path string) BoardData {
 		spaceRow := make([]Space, len(text))
 		for x, c := range text {
 			switch c {
-			case 'E':
+			case 'E', 'G':
+				var alignment int
+				var appendSlice *Players
+				if c == 'E' {
+					alignment = ElfAlignment
+					appendSlice = &data.elves
+				} else {
+					alignment = GoblinAlignment
+					appendSlice = &data.goblins
+				}
 				player := Player{
-					alignment: ElfAlignment,
+					health:    10,
+					alignment: alignment,
 					xLocation: x,
 					yLocation: y,
 				}
-				data.elves = append(data.elves, player)
-				spaceRow[x] = false
-			case 'G':
-				player := Player{
-					alignment: GoblinAlignment,
-					xLocation: x,
-					yLocation: y,
-				}
-				data.goblins = append(data.goblins, player)
-				spaceRow[x] = false
+				*appendSlice = append(*appendSlice, player)
+				data.allPlayers = append(data.allPlayers, player)
+				fallthrough
 			case '#':
 				spaceRow[x] = false
 			case '.':
@@ -60,21 +63,45 @@ func Parse(path string) BoardData {
 	return data
 }
 
+// Players on a board, used for sorting
+type Players []Player
+
 // BoardData the board with elves, goblins and spaces/obstacles
 type BoardData struct {
-	elves   []Player
-	goblins []Player
-	spaces  [][]Space
+	elves      Players
+	goblins    Players
+	allPlayers Players
+	spaces     [][]Space
+}
+
+// Len number of players
+func (pl Players) Len() int { return len(pl) }
+
+func (pl Players) Less(i, j int) bool {
+	player1 := pl[i]
+	player2 := pl[j]
+	if player1.yLocation < player2.yLocation {
+		return true
+	} else if player1.yLocation == player2.yLocation {
+		return player1.xLocation < player2.xLocation
+	} else {
+		return false
+	}
+}
+
+func (pl Players) Swap(i, j int) {
+	pl[i], pl[j] = pl[j], pl[i]
 }
 
 // Player either elf or goblin
 type Player struct {
+	health    int
 	alignment int
 	xLocation int
 	yLocation int
 }
 
-// Player either elf or goblin
+// Space on the board
 type Space bool
 
 func (p Player) getLocation() (int, int) {
