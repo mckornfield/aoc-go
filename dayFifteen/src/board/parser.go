@@ -74,23 +74,16 @@ type BoardData struct {
 	spaces     [][]Space
 }
 
-// Len number of players
+func (pl Players) Swap(i, j int) {
+	pl[i], pl[j] = pl[j], pl[i]
+}
+
 func (pl Players) Len() int { return len(pl) }
 
 func (pl Players) Less(i, j int) bool {
-	player1 := pl[i]
-	player2 := pl[j]
-	if player1.yLocation < player2.yLocation {
-		return true
-	} else if player1.yLocation == player2.yLocation {
-		return player1.xLocation < player2.xLocation
-	} else {
-		return false
-	}
-}
-
-func (pl Players) Swap(i, j int) {
-	pl[i], pl[j] = pl[j], pl[i]
+	pl1 := pl[i]
+	pl2 := pl[j]
+	return isLess(pl1, pl2)
 }
 
 // Player either elf or goblin
@@ -99,6 +92,15 @@ type Player struct {
 	alignment int
 	xLocation int
 	yLocation int
+	Location
+}
+
+func (p Player) getX() int {
+	return p.xLocation
+}
+
+func (p Player) getY() int {
+	return p.yLocation
 }
 
 // Space on the board

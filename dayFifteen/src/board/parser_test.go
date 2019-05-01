@@ -2,7 +2,6 @@ package board
 
 import (
 	"reflect"
-	"fmt"
 	"sort"
 	"testing"
 )
@@ -67,11 +66,11 @@ func TestPlayerSort(t* testing.T){
 		},
 		Player{
 			xLocation: 1,
-			yLocation: 0,
+			yLocation: 1,
 		},
 		Player{
 			xLocation: 1,
-			yLocation: 1,
+			yLocation: 0,
 		},
 		Player{
 			xLocation: 1,
@@ -83,9 +82,10 @@ func TestPlayerSort(t* testing.T){
 		},
 	}
 	sort.Stable(players)
-	fmt.Println(players)
 
-	if reflect.deep
+	playerExpectedXLoc := []int{1, 1, 1, 2, 3}
+	playerExpectedYLoc := []int{0, 0, 1, 2, 3}
+	checkLocations(t, playerExpectedXLoc,playerExpectedYLoc, players)
 }
 
 func checkLocations(t *testing.T, expectedXLocations, expectedYLocations []int, players []Player) {
