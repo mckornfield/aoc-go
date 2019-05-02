@@ -17,14 +17,14 @@ func TestParserDataIsCorrect(t *testing.T) {
 	elfExpectedXLoc := []int{4, 1, 5, 4}
 	elfExpectedYLoc := []int{1, 2, 2, 3}
 
-	checkLocations(t, elfExpectedXLoc, elfExpectedYLoc, board.elves)
+	checkLocations(t, elfExpectedXLoc, elfExpectedYLoc, board.elves.toLocations())
 
 	if len(board.goblins) != 3 {
 		t.Errorf("Expected 3 goblins, got %d", len(board.goblins))
 	}
 	goblinExpectedXLoc := []int{2, 3, 2}
 	goblinExpectedYLoc := []int{1, 2, 3}
-	checkLocations(t, goblinExpectedXLoc, goblinExpectedYLoc, board.goblins)
+	checkLocations(t, goblinExpectedXLoc, goblinExpectedYLoc, board.goblins.toLocations())
 
 	if len(board.spaces) != 5 {
 		t.Errorf("Board had the wrong number of rows, expected 5, got %d", len(board.spaces))
@@ -85,13 +85,13 @@ func TestPlayerSort(t* testing.T){
 
 	playerExpectedXLoc := []int{1, 1, 1, 2, 3}
 	playerExpectedYLoc := []int{0, 0, 1, 2, 3}
-	checkLocations(t, playerExpectedXLoc,playerExpectedYLoc, players)
+	checkLocations(t, playerExpectedXLoc,playerExpectedYLoc, players.toLocations())
 }
 
-func checkLocations(t *testing.T, expectedXLocations, expectedYLocations []int, players []Player) {
+func checkLocations(t *testing.T, expectedXLocations, expectedYLocations []int, players []Location) {
 	for index, elem := range players {
-		playerXLoc := elem.xLocation
-		playerYLoc := elem.yLocation
+		playerXLoc := elem.getX()
+		playerYLoc := elem.getY()
 		expectedXLoc := expectedXLocations[index]
 		expectedYLoc := expectedYLocations[index]
 		if playerXLoc != expectedXLoc {

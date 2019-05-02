@@ -63,49 +63,10 @@ func Parse(path string) BoardData {
 	return data
 }
 
-// Players on a board, used for sorting
-type Players []Player
-
 // BoardData the board with elves, goblins and spaces/obstacles
 type BoardData struct {
 	elves      Players
 	goblins    Players
 	allPlayers Players
 	spaces     [][]Space
-}
-
-func (pl Players) Swap(i, j int) {
-	pl[i], pl[j] = pl[j], pl[i]
-}
-
-func (pl Players) Len() int { return len(pl) }
-
-func (pl Players) Less(i, j int) bool {
-	pl1 := pl[i]
-	pl2 := pl[j]
-	return isLess(pl1, pl2)
-}
-
-// Player either elf or goblin
-type Player struct {
-	health    int
-	alignment int
-	xLocation int
-	yLocation int
-	Location
-}
-
-func (p Player) getX() int {
-	return p.xLocation
-}
-
-func (p Player) getY() int {
-	return p.yLocation
-}
-
-// Space on the board
-type Space bool
-
-func (p Player) getLocation() (int, int) {
-	return p.xLocation, p.yLocation
 }
