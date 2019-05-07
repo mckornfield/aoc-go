@@ -6,7 +6,7 @@ import (
 
 const attackPower = 3
 
-func determineAttackAndPerform(board *BoardData, player Player) bool {
+func determineAttackAndPerform(board *BoardData, player Player) (bool, int) {
 	// Check nearby players of opposite alignment
 	adversaries := board.getAdversaries(player.alignment)
 	locToAdversary := make(map[Location]Player)
@@ -16,22 +16,23 @@ func determineAttackAndPerform(board *BoardData, player Player) bool {
 	adversary, err := getAdjacentAdversary(*board, player)
 	if err != nil {
 		// fmt.Println(err)
-		return false
+		return false, -1
 	}
 	// Attack
 	playerIndex, _, _ := board.getIndexAndPlayer(adversary.id)
 	oldHealth := board.allPlayers[playerIndex].health
-	board.allPlayers[playerIndex].health = oldHealth - attackPower
+	board.allPlayers[playerIndex].health = oldHealth - player.attackPower
 	// fmt.Println("Attacking player", player)
 	// fmt.Println("Attacked player", board.allPlayers[playerIndex])
 	if board.allPlayers[playerIndex].health < 0 {
 		// Remove player and update space
 		loc := board.allPlayers[playerIndex].toLocation()
+		alignment := board.allPlayers[playerIndex].alignment
 		board.allPlayers = append(board.allPlayers[:playerIndex], board.allPlayers[playerIndex+1:]...)
 		board.spaces[loc] = true
-		return true
+		return true, alignment
 	}
-	return false
+	return false, -1
 }
 
 func getAdjacentAdversary(board BoardData, player Player) (Player, error) {

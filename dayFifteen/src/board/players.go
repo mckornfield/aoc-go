@@ -19,11 +19,12 @@ func (pl Players) Less(i, j int) bool {
 
 // Player either elf or goblin
 type Player struct {
-	id        int
-	health    int
-	alignment int
-	xLocation int
-	yLocation int
+	id          int
+	health      int
+	alignment   int
+	xLocation   int
+	yLocation   int
+	attackPower int
 }
 
 func (p Player) getX() int {

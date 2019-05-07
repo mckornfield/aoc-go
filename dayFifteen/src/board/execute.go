@@ -26,7 +26,7 @@ func RunThroughGame(boardLocation string, maxNumRounds int, shouldLog bool) int 
 				continue
 			}
 			player = movePlayer(player, board)
-			playerDied := determineAttackAndPerform(&board, player)
+			playerDied, _ := determineAttackAndPerform(&board, player)
 			i++
 			if playerDied && (len(board.getGoblins()) == 0 || len(board.getElves()) == 0) {
 				fmt.Println("Game ended!")
@@ -61,7 +61,7 @@ func RunThroughGame(boardLocation string, maxNumRounds int, shouldLog bool) int 
 		health += player.health
 	}
 
-	fmt.Println("Number of rounds:", rounds, "Number of HP left:", health)
+	fmt.Println("Number of rounds:", rounds, "| Number of HP left:", health)
 
 	return health * rounds
 }

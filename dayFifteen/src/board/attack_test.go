@@ -11,6 +11,7 @@ func TestAdversaryAttack(t *testing.T){
 		yLocation: 1,
 		health: 10,
 		alignment: ElfAlignment,
+		attackPower: 3,
 	}
 	goblin := Player{
 		id: 1,
@@ -18,6 +19,7 @@ func TestAdversaryAttack(t *testing.T){
 		yLocation: 2,
 		health: 10,
 		alignment: GoblinAlignment,
+		attackPower: 3,
 	}
 	goblin2 := Player{
 		id: 2,
@@ -25,6 +27,7 @@ func TestAdversaryAttack(t *testing.T){
 		yLocation: 1,
 		health: 11,
 		alignment: GoblinAlignment,
+		attackPower: 3,
 	}
 	spaces := map[Location]Space{
 		Loc{x:1,y:2}:false,

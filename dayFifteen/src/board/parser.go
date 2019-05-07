@@ -41,11 +41,12 @@ func Parse(path string) BoardData {
 					alignment = GoblinAlignment
 				}
 				player := Player{
-					id:        id,
-					health:    playerHealth,
-					alignment: alignment,
-					xLocation: x,
-					yLocation: y,
+					id:          id,
+					health:      playerHealth,
+					alignment:   alignment,
+					xLocation:   x,
+					yLocation:   y,
+					attackPower: attackPower,
 				}
 				id++
 				data.allPlayers = append(data.allPlayers, player)
