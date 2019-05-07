@@ -38,7 +38,8 @@ func (p Player) String() string {
 	} else {
 		alignmentStr = "Goblin"
 	}
-	return fmt.Sprintf("{id: %d, health: %d, alignment: %s, x: %d, y: %d}", p.id, p.health, alignmentStr, p.xLocation, p.yLocation)
+	return fmt.Sprintf("{id: %d, health: %d, alignment: %s, power: %d, x: %d, y: %d}",
+		p.id, p.health, alignmentStr, p.attackPower, p.xLocation, p.yLocation)
 }
 
 func (p Player) getY() int {
