@@ -11,30 +11,26 @@ func TestParserDataIsCorrect(t *testing.T) {
 	if reflect.DeepEqual(board, BoardData{}) {
 		t.Errorf("Board is empty")
 	}
-	if len(board.elves) != 4 {
-		t.Errorf("Expected 4 elves, got %d", len(board.elves))
+	elves := board.getAdversaries(GoblinAlignment)
+	if len(elves) != 4 {
+		t.Errorf("Expected 4 elves, got %d", len(elves))
 	}
 	elfExpectedXLoc := []int{4, 1, 5, 4}
 	elfExpectedYLoc := []int{1, 2, 2, 3}
 
-	checkLocations(t, elfExpectedXLoc, elfExpectedYLoc, board.elves.toLocations())
+	checkLocations(t, elfExpectedXLoc, elfExpectedYLoc, elves.toLocations())
 
-	if len(board.goblins) != 3 {
-		t.Errorf("Expected 3 goblins, got %d", len(board.goblins))
+
+	goblins := board.getAdversaries(ElfAlignment)
+	if len(goblins) != 3 {
+		t.Errorf("Expected 3 goblins, got %d", len(goblins))
 	}
 	goblinExpectedXLoc := []int{2, 3, 2}
 	goblinExpectedYLoc := []int{1, 2, 3}
-	checkLocations(t, goblinExpectedXLoc, goblinExpectedYLoc, board.goblins.toLocations())
+	checkLocations(t, goblinExpectedXLoc, goblinExpectedYLoc, goblins.toLocations())
 
-	if len(board.spaces) != 5 {
-		t.Errorf("Board had the wrong number of rows, expected 5, got %d", len(board.spaces))
-	}
-
-	for index, val := range board.spaces {
-		length := len(val)
-		if length != 7 {
-			t.Errorf("Row number %d had the wrong number of items, expected 7, got %d", index, length)
-		}
+	if len(board.spaces) != 35 {
+		t.Errorf("Board had the wrong number of spaces, expected 35, got %d", len(board.spaces))
 	}
 
 	expectedOpenSpaces := []struct {
@@ -52,7 +48,7 @@ func TestParserDataIsCorrect(t *testing.T) {
 	}
 
 	for _, val := range expectedOpenSpaces {
-		if !board.spaces[val.y][val.x] {
+		if !board.spaces[Loc{y:val.y, x:val.x}] {
 			t.Errorf("The space %+v should have been open", val)
 		}
 	}
@@ -86,6 +82,41 @@ func TestPlayerSort(t* testing.T){
 	playerExpectedXLoc := []int{1, 1, 1, 2, 3}
 	playerExpectedYLoc := []int{0, 0, 1, 2, 3}
 	checkLocations(t, playerExpectedXLoc,playerExpectedYLoc, players.toLocations())
+}
+
+
+func TestLocationSort_openSpots(t* testing.T){
+	locations := Locations{
+		Loc{
+			x: 3,
+			y: 3,
+		},
+		Loc{
+			x: 3,
+			y: 1,
+		},
+		Loc{
+			x: 1,
+			y: 3,
+		},
+		Loc{
+			x: 4,
+			y: 2,
+		},
+		Loc{
+			x: 2,
+			y: 2,
+		},
+		Loc{
+			x: 1,
+			y: 1,
+		},
+	}
+	sort.Stable(locations)
+
+	playerExpectedXLoc := []int{1, 3, 2, 4,1,3}
+	playerExpectedYLoc := []int{1, 1, 2, 2,3,3}
+	checkLocations(t, playerExpectedXLoc,playerExpectedYLoc, locations)
 }
 
 func checkLocations(t *testing.T, expectedXLocations, expectedYLocations []int, players []Location) {

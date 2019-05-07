@@ -25,48 +25,37 @@ func Parse(path string) BoardData {
 	scanner.Split(bufio.ScanLines)
 	y := 0
 	data := BoardData{}
-	spaces := make([][]Space, 5)
+	spaces := make(map[Location]Space)
+	id := 0
 	for scanner.Scan() {
 		text := scanner.Text()
-		spaceRow := make([]Space, len(text))
 		for x, c := range text {
 			switch c {
 			case 'E', 'G':
 				var alignment int
-				var appendSlice *Players
 				if c == 'E' {
 					alignment = ElfAlignment
-					appendSlice = &data.elves
 				} else {
 					alignment = GoblinAlignment
-					appendSlice = &data.goblins
 				}
 				player := Player{
+					id:        id,
 					health:    10,
 					alignment: alignment,
 					xLocation: x,
 					yLocation: y,
 				}
-				*appendSlice = append(*appendSlice, player)
+				id++
 				data.allPlayers = append(data.allPlayers, player)
 				fallthrough
 			case '#':
-				spaceRow[x] = false
+				spaces[Loc{x: x, y: y}] = false
 			case '.':
-				spaceRow[x] = true
+				spaces[Loc{x: x, y: y}] = true
 			}
 		}
-		spaces[y] = spaceRow
 		y++
 	}
 	data.spaces = spaces
 	return data
-}
-
-// BoardData the board with elves, goblins and spaces/obstacles
-type BoardData struct {
-	elves      Players
-	goblins    Players
-	allPlayers Players
-	spaces     [][]Space
 }
