@@ -1,5 +1,7 @@
 package board
 
+import "fmt"
+
 // Locations a slice of x y coordinates
 type Locations []Location
 
@@ -7,6 +9,7 @@ type Locations []Location
 type Location interface {
 	getX() int
 	getY() int
+	String() string
 }
 
 // Loc simple location
@@ -21,6 +24,10 @@ func (l Loc) getX() int {
 
 func (l Loc) getY() int {
 	return l.y
+}
+
+func (l Loc) String() string {
+	return fmt.Sprintf("{x:%d, y:%d}", l.getX(), l.getY())
 }
 
 // Len number of players

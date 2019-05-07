@@ -3,6 +3,7 @@ package board
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -10,6 +11,7 @@ import (
 const (
 	ElfAlignment    = iota
 	GoblinAlignment = iota
+	playerHealth    = 200
 )
 
 // Parse takes a file location and parses the board to a data structure
@@ -40,7 +42,7 @@ func Parse(path string) BoardData {
 				}
 				player := Player{
 					id:        id,
-					health:    10,
+					health:    playerHealth,
 					alignment: alignment,
 					xLocation: x,
 					yLocation: y,
@@ -58,4 +60,9 @@ func Parse(path string) BoardData {
 	}
 	data.spaces = spaces
 	return data
+}
+
+func getFileAsString(path string) ([]byte, error) {
+	absPath, _ := filepath.Abs(path)
+	return ioutil.ReadFile(absPath)
 }

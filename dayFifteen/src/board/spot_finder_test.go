@@ -2,7 +2,6 @@ package board
 
 import(
 	"testing"
-	"fmt"
 	"sort"
 )
 
@@ -13,7 +12,7 @@ func TestSpotFinder(t *testing.T) {
 		t.Errorf("should have had more than one open spot")
 	}
 	
-	fmt.Println(openSpots)
+	// fmt.Println(openSpots)
 	sort.Stable(openSpots)
 	playerExpectedXLoc := []int{3, 5, 2, 5, 1, 3}
 	playerExpectedYLoc := []int{1, 1, 2, 2, 3, 3}
@@ -28,7 +27,7 @@ func TestSpotFinder_input1(t *testing.T) {
 	}
 	
 	sort.Stable(openSpots)
-	fmt.Println(openSpots)
+	// fmt.Println(openSpots)
 	playerExpectedXLoc := []int{1, 3, 2, 4, 1, 3}
 	playerExpectedYLoc := []int{1, 1, 2, 2, 3, 3}
 	checkLocations(t, playerExpectedXLoc, playerExpectedYLoc, openSpots)
