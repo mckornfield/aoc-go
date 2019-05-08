@@ -14,7 +14,7 @@ func TestInputPowerLevel(t *testing.T){
 		{"pinput3.txt",15,50},
 		{"pinput4.txt",12,50},
 		{"pinput5.txt",34,50},
-		// {"puzz-1-input.txt",4,50}, // This is slow! be careful uncommenting
+		{"puzz-1-input.txt",34,40}, // This is slow! be careful uncommenting
 	}
 	for _, config := range configs {
 		level := TryPowerLevels("../"+ config.file,100,config.maxLevel)

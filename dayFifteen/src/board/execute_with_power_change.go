@@ -5,19 +5,35 @@ import (
 	"sort"
 )
 
+type response struct {
+	power  int
+	answer int
+}
+
+const powerMax = 100000
+
 // TryPowerLevels attempt different power levels up to max
 func TryPowerLevels(boardLocation string, maxNumRounds, maxPowerLevel int) int {
+	powerChannel := make(chan int)
 	for power := 4; power < maxPowerLevel; power++ {
-		worked := RunThroughGameWithPowerAmount(boardLocation, maxNumRounds, false, power)
-		if worked {
-			return power
+		go RunThroughGameWithPowerAmount(boardLocation, maxNumRounds, false, power, powerChannel)
+	}
+	possiblePower := 100000
+	for power := 4; power < maxPowerLevel; power++ {
+		receivedPower := <-powerChannel
+		if receivedPower != -1 && receivedPower < possiblePower {
+			possiblePower = receivedPower
 		}
 	}
-	return -1
+
+	if possiblePower == powerMax {
+		return -1 // Error
+	}
+	return possiblePower
 }
 
 // RunThroughGameWithPowerAmount is similar to run through game, but instead tries a different power level
-func RunThroughGameWithPowerAmount(boardLocation string, maxNumRounds int, shouldLog bool, elfPowerLevel int) bool {
+func RunThroughGameWithPowerAmount(boardLocation string, maxNumRounds int, shouldLog bool, elfPowerLevel int, powerChannel chan int) bool {
 	board := Parse(boardLocation)
 	gameOver := false
 	rounds := 0
@@ -45,14 +61,15 @@ func RunThroughGameWithPowerAmount(boardLocation string, maxNumRounds int, shoul
 			i++
 			if playerDied && playerAlignment == ElfAlignment {
 				// Power level failed
-				fmt.Println("Power level", elfPowerLevel, "failed")
+				// fmt.Println("Power level", elfPowerLevel, "failed")
+				powerChannel <- -1
 				return false
 			}
 			if playerDied && (len(board.getGoblins()) == 0 || len(board.getElves()) == 0) {
-				fmt.Println("Game ended!")
+				// fmt.Println("Game ended!")
 				gameOver = true
 				if id == ids[len(ids)-1] {
-					fmt.Println("Round over")
+					// fmt.Println("Round over")
 					rounds++
 				}
 				break
@@ -81,8 +98,9 @@ func RunThroughGameWithPowerAmount(boardLocation string, maxNumRounds int, shoul
 		health += player.health
 	}
 
-	fmt.Println("Number of rounds:", rounds, "| Number of HP left:", health)
-	fmt.Println("Outcome:", rounds*health)
-	fmt.Println("Power level", elfPowerLevel, "worked")
+	// fmt.Println("Number of rounds:", rounds, "| Number of HP left:", health)
+	// fmt.Println("Outcome:", rounds*health)
+	// fmt.Println("Power level", elfPowerLevel, "worked")
+	powerChannel <- elfPowerLevel
 	return true
 }
