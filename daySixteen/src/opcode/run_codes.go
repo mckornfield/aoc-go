@@ -1,0 +1,5 @@
+package opcode
+
+func Addr() {
+
+}
