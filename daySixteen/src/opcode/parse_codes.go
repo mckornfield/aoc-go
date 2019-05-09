@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	beforeRegex = regexp.MustCompile("Before: \\[(\\d), (\\d), (\\d), (\\d)\\]")
-	opRegex     = regexp.MustCompile(`(\d), (\\d), (\\d), (\\d)`)
-	afterRegex  = regexp.MustCompile("After: \\[(\\d), (\\d), (\\d), (\\d)\\]")
+	beforeRegex = regexp.MustCompile(`Before: \[(\d+), (\d+), (\d+), (\d+)\]`)
+	opRegex     = regexp.MustCompile(`(\d+) (\d+) (\d+) (\d+)`)
+	afterRegex  = regexp.MustCompile(`After:\s+\[(\d+), (\d+), (\d+), (\d+)\]`)
 )
 
-func Parse(path string) OpCodeData {
+func Parse(path string) []OpCodeData {
 	absPath, _ := filepath.Abs(path)
 	file, err := os.Open(absPath)
 	defer file.Close()
@@ -25,18 +25,26 @@ func Parse(path string) OpCodeData {
 	}
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
-	data := OpCodeData{}
+	result := []OpCodeData{}
+	var data OpCodeData
 	for scanner.Scan() {
 		text := scanner.Text()
+		fmt.Println(text)
 		if beforeRegex.MatchString(text) {
-			data.Before = FromSliceToRegisters(beforeRegex.SubexpNames())
-		} else if afterRegex.MatchString(text) {
-			data.After = FromSliceToRegisters(afterRegex.SubexpNames())
+			data = OpCodeData{}
+			groups := beforeRegex.FindStringSubmatch(text)[1:]
+			data.Before = FromSliceToRegisters(groups)
+		} else if match := afterRegex.FindStringSubmatch(text); len(match) > 0 {
+			groups := match[1:]
+			data.After = FromSliceToRegisters(groups)
+			result = append(result, data)
 		} else if opRegex.MatchString(text) {
-			data.Operation = FromSliceToOperation(opRegex.SubexpNames())
+			groups := opRegex.FindStringSubmatch(text)[1:]
+			data.Operation = FromSliceToOperation(groups)
 		}
+		// Skip everything else
 	}
-	return data
+	return result
 }
 
 func toInt(val string) int {
@@ -64,19 +72,4 @@ func FromSliceToOperation(data []string) Operation {
 		Output: toInt(data[3]),
 	}
 	return operations
-}
-
-type OpCodeData struct {
-	Before Registers
-	Operation
-	After Registers
-}
-
-type Registers []int
-
-type Operation struct {
-	OpCode int
-	First  int
-	Second int
-	Output int
 }

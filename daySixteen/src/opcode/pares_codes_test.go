@@ -2,6 +2,7 @@ package opcode_test
 
 import (
 	"opcode"
+	"reflect"
 	"testing"
 )
 
@@ -30,5 +31,20 @@ func TestFromSliceToOperation(t *testing.T) {
 	}
 	if result.Output != 7 {
 		t.Error("Should have been 7")
+	}
+}
+
+func TestParse(t *testing.T) {
+	val := opcode.Parse("../input1.txt")
+	if !reflect.DeepEqual(val[0].Before, opcode.Registers{0, 0, 2, 2}) {
+		t.Error("Before values were not equal")
+	}
+
+	if !reflect.DeepEqual(val[0].After, opcode.Registers{4, 0, 2, 2}) {
+		t.Error("Before values were not equal")
+	}
+
+	if !reflect.DeepEqual(val[0].Operation, opcode.Operation{9, 2, 3, 0}) {
+		t.Error("Before values were not equal")
 	}
 }
