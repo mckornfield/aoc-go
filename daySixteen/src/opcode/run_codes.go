@@ -81,13 +81,6 @@ func Seti(op Operation, input Registers) (Registers, error) {
 	return runTemplate(op, input, validateFirstRegister, calculation)
 }
 
-func Getr(op Operation, input Registers) (Registers, error) {
-	calculation := func(op Operation, input Registers) {
-		input[op.Output] = input[op.First] * op.Second
-	}
-	return runTemplate(op, input, validateRegisters, calculation)
-}
-
 func Gtir(op Operation, input Registers) (Registers, error) {
 	calculation := func(op Operation, input Registers) {
 		if op.First > input[op.Second] {

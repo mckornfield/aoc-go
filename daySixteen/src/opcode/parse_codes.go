@@ -29,7 +29,6 @@ func Parse(path string) []OpCodeData {
 	var data OpCodeData
 	for scanner.Scan() {
 		text := scanner.Text()
-		fmt.Println(text)
 		if beforeRegex.MatchString(text) {
 			data = OpCodeData{}
 			groups := beforeRegex.FindStringSubmatch(text)[1:]
