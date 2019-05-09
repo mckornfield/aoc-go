@@ -55,7 +55,7 @@ func Bani(op Operation, input Registers) (Registers, error) {
 
 func Borr(op Operation, input Registers) (Registers, error) {
 	calculation := func(op Operation, input Registers) {
-		input[op.Output] = input[op.First] | op.Second
+		input[op.Output] = input[op.First] | input[op.Second]
 	}
 	return runTemplate(op, input, validateRegisters, calculation)
 }

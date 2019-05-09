@@ -9,7 +9,7 @@ func TestOpCodeRunner(t *testing.T) {
 	val := opcode.Parse("../input1.txt")
 	num := opcode.TryCodesAndGetCountOfMatches(val[0])
 	if num != 2 {
-g		t.Errorf("Should have been %d matches, got %d", 2, num)
+		t.Errorf("Should have been %d matches, got %d", 2, num)
 	}
 }
 
