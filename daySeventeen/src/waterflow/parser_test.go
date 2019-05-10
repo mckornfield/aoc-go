@@ -7,7 +7,10 @@ import (
 )
 
 func TestParseOfInitialData(t *testing.T) {
-	lineMap := waterflow.ParseFile("sample1.txt")
+	lineMap, maxY := waterflow.ParseFile("sample1.txt")
+	if maxY != 13 {
+		t.Error("Max Y was ", maxY, "instead of", 13)
+	}
 	if len(lineMap) != 34 {
 		t.Errorf("length of map was %d not 34", len(lineMap))
 	}

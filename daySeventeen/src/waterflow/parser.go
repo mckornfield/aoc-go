@@ -25,20 +25,32 @@ func MakeSet(locs ...Location) LocationSet {
 	return set
 }
 
+func (l LocationSet) Clone() LocationSet {
+	locs := []Location{}
+	for loc := range l {
+		locs = append(locs, loc)
+	}
+	return MakeSet(locs...)
+}
+
 // ParseFile HAHhahahaa
-func ParseFile(path string) LocationSet {
+func ParseFile(path string) (LocationSet, int) {
 	scanner, close := fileToScanner(path)
 	defer close()
 	locsMap := make(map[Location]bool)
 	scanner.Split(bufio.ScanLines)
+	maxY := 0
 	for scanner.Scan() {
 		text := scanner.Text()
 		locsForLine := ParseLine(text)
 		for _, loc := range locsForLine {
+			if loc.Y > maxY {
+				maxY = loc.Y
+			}
 			locsMap[loc] = true
 		}
 	}
-	return locsMap
+	return locsMap, maxY
 }
 
 func fileToScanner(path string) (*bufio.Scanner, func() error) {
