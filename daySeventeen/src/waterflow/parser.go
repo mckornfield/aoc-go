@@ -17,7 +17,7 @@ var (
 type LocationSet map[Location]bool
 
 // MakeSet really I have to put a comment?
-func MakeSet(locs []Location) LocationSet {
+func MakeSet(locs ...Location) LocationSet {
 	set := make(map[Location]bool)
 	for _, loc := range locs {
 		set[loc] = true

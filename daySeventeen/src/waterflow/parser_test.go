@@ -12,7 +12,7 @@ func TestParseOfInitialData(t *testing.T) {
 		t.Errorf("length of map was %d not 34", len(lineMap))
 	}
 	// Check points
-	val := waterflow.MakeSet([]waterflow.Location{
+	val := waterflow.MakeSet(
 		waterflow.Location{X: 495, Y: 2}, waterflow.Location{X: 495, Y: 3}, waterflow.Location{X: 495, Y: 4},
 		waterflow.Location{X: 495, Y: 5}, waterflow.Location{X: 495, Y: 6}, waterflow.Location{X: 495, Y: 7},
 		waterflow.Location{X: 496, Y: 7}, waterflow.Location{X: 497, Y: 7}, waterflow.Location{X: 498, Y: 7},
@@ -26,7 +26,7 @@ func TestParseOfInitialData(t *testing.T) {
 		waterflow.Location{X: 503, Y: 13}, waterflow.Location{X: 504, Y: 13}, waterflow.Location{X: 504, Y: 12},
 		waterflow.Location{X: 504, Y: 11}, waterflow.Location{X: 504, Y: 10}, waterflow.Location{X: 506, Y: 1},
 		waterflow.Location{X: 506, Y: 2},
-	})
+	)
 	for loc, _ := range val {
 		if _, present := lineMap[loc]; !present {
 			t.Error(loc, "was not found but should have been")
