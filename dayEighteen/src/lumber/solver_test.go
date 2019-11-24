@@ -21,7 +21,7 @@ func TestGetAnswerPartOne(t *testing.T) {
 		t.Error("There should have been no error")
 	}
 	if answer != 467819 {
-		t.Error("Answer was", answer, "Should have been", 1147)
+		t.Error("Answer was", answer, "Should have been", 467819)
 	}
 }
 
@@ -30,8 +30,8 @@ func TestGetAnswerPartTwo(t *testing.T) {
 	if err != nil {
 		t.Error("There should have been no error")
 	}
-	if answer != 467819 {
-		t.Error("Answer was", answer, "Should have been", 1147)
+	if answer != 195305 {
+		t.Error("Answer was", answer, "Should have been", 195305)
 	}
 }
 

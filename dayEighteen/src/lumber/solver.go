@@ -90,14 +90,7 @@ func (originalGrid Grid) roleForwardNTimes(times int64) Grid {
 	haveFiguredOutLoopingPattern := false
 	previousGridPos := 0
 	for i := int64(0); i < times; i++ {
-		// fmt.Println(strconv.Itoa(int(times)))
 		if haveFiguredOutLoopingPattern {
-			// fmt.Println(len(previousGridStates))
-			// for _, _ = range previousGridStates {
-			// 	// fmt.Println(g.String())
-			// 	fmt.Println("--------------------------------------------------------")
-			// }
-			// panic("abc")
 			if previousGridPos > len(previousGridStates)-1 {
 				previousGridPos = 0
 			}
@@ -108,11 +101,8 @@ func (originalGrid Grid) roleForwardNTimes(times int64) Grid {
 		currentGrid = currentGrid.roleForwardOne()
 
 		if haveStartedLooping {
-			// fmt.Println("got here")
 			previousGridStates = append(previousGridStates, currentGrid)
 		}
-		// hasher.Reset()
-		// hasher.Write([]byte(currentGrid.String()))
 		gridHash := currentGrid.String()
 		if _, exists := gridConfigurations[gridHash]; exists {
 			if haveStartedLooping {
@@ -122,7 +112,6 @@ func (originalGrid Grid) roleForwardNTimes(times int64) Grid {
 			} else {
 				fmt.Println(strconv.Itoa(int(i)))
 				fmt.Println("Started looping at iteration" + strconv.Itoa(int(i)))
-				// previousGridStates = append(previousGridStates, currentGrid)
 				haveStartedLooping = true
 				gridConfigurations = make(map[string]bool, 0)
 			}
