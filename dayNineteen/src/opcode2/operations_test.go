@@ -14,7 +14,7 @@ func TestSampleState(t *testing.T) {
 }
 
 func TestPartOne(t *testing.T) {
-	expectedReg := Registers{6, 5, 6, 0, 0, 9}
+	expectedReg := Registers{2072, 877, 877, 1, 256, 876}
 	actualReg := RunProgram("puzzle_input.txt")
 	if !reflect.DeepEqual(expectedReg, actualReg) {
 		t.Error("Registers not equal, expected=", expectedReg, "actual=", actualReg)
@@ -22,9 +22,9 @@ func TestPartOne(t *testing.T) {
 }
 
 func TestParsing(t *testing.T) {
-	operations, instructionPointer := ParseProgram("sample_program.txt")
-	if instructionPointer != 0 {
-		t.Error("Initial register value was not 0, was instead", instructionPointer)
+	operations, instructionPointerLoc := ParseProgram("sample_program.txt")
+	if instructionPointerLoc != 0 {
+		t.Error("Initial register value was not 0, was instead", instructionPointerLoc)
 	}
 	expectedOperation := Operation{"seti", 5, 0, 1}
 	if operations[0] != expectedOperation {

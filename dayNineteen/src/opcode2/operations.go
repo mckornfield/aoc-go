@@ -11,15 +11,13 @@ import (
 )
 
 func RunProgram(fileLocation string) Registers {
-	operations, instructionPointer := ParseProgram(fileLocation)
+	operations, instructionPointerLocation := ParseProgram(fileLocation)
 	count := 0
-	regs := Registers{int64(instructionPointer), int64(0), int64(0), int64(0), int64(0), int64(0)}
+	instructionPointer := int64(0)
+	regs := Registers{int64(0), int64(0), int64(0), int64(0), int64(0), int64(0)}
 	for instructionPointer < int64(len(operations)) {
-		regs[0] = int64(instructionPointer)
+		regs[instructionPointerLocation] = int64(instructionPointer)
 		currentOp := operations[instructionPointer]
-		fmt.Println(instructionPointer)
-		fmt.Println(currentOp.OpInstruction)
-		fmt.Println(regs)
 		funcToRun := GetFunctionByName(currentOp.OpInstruction)
 		// fmt.Println(funcToRun)
 		var err error
@@ -27,11 +25,16 @@ func RunProgram(fileLocation string) Registers {
 		if err != nil {
 			panic(err)
 		}
-		instructionPointer = regs[0]
+		instructionPointer = regs[instructionPointerLocation]
 		instructionPointer++
 		count++
-		// if count > 100 {
-		// 	panic("over 1000")
+		// if count%100 == 0 {
+		// 	fmt.Println(instructionPointer)
+		// 	fmt.Println(currentOp.OpInstruction)
+		// 	fmt.Println(regs)
+		// }
+		// if count > 1000 {
+		// 	panic("a")
 		// }
 		// if instructionPointer == 1 {
 		// 	panic("Ah")
